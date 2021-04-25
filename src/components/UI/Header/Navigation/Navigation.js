@@ -1,0 +1,76 @@
+import React, { Fragment , useState , useContext} from 'react'
+
+// import component
+import Logo from '../../Logo/Logo'
+
+// For styling
+import {
+	Collapse,
+	Navbar,
+	NavbarToggler,
+	NavbarBrand,
+	Nav,
+	NavItem,
+	NavLink,
+	Button,
+	NavbarText
+  } from 'reactstrap';
+
+// react-router-dom
+  import { Link } from 'react-router-dom';
+
+// context api stuff
+import UserContext from '../../../../context/UserContext'
+
+import { CREATE_USER } from '../../../../context/action-types';
+  
+const Navigation = () =>{
+	const [isOpen, setIsOpen] = useState(false);
+	// const [searchInput,setSearchInput] = useState("")
+	const {user , dispatch} = useContext(UserContext)
+	const {auth_detail} = user
+	const toggle = () => setIsOpen(!isOpen);
+
+	return(
+		<Fragment>
+			<Navbar dark className="m-0 p-0" expand="sm">
+			<div><Logo height="50px"/></div>
+			<NavbarBrand href="/" className="companyName font-weight-bold">MugglePexels</NavbarBrand>
+			<NavbarToggler onClick={toggle}  />
+
+			<Collapse 
+				isOpen={isOpen} 
+				className="collapse-navbar" navbar  
+				style={{backgroundColor:(isOpen && window.innerWidth<576) ?"#242B2E":"transparent"}}>
+			<NavbarText>{auth_detail?`Hello ${auth_detail.email}`:"Hello Muggle !!"}</NavbarText>
+				<Nav className="ml-auto p-3 auto text-white" navbar>
+					{
+						auth_detail?
+							(<NavItem >
+             		  			<NavLink tag={Link} to="/" className="text-white"
+								   onClick={()=>{
+										   localStorage.removeItem("user");
+										   dispatch({type:CREATE_USER, payload:null})
+
+									   }}>
+							   		{isOpen?"Logout":
+									   <Button color="info" size="lg">
+									   	Logout
+									   </Button>}
+								</NavLink>
+            				</NavItem>):
+							(<NavItem >
+            		  			<NavLink tag={Link} to="/signup" className="text-white">
+							  		{isOpen?"Join":<Button color="info" size="lg">Join</Button>}		
+								</NavLink>
+           					</NavItem>)
+
+					}		
+         		</Nav>
+			</Collapse>
+			</Navbar>
+		</Fragment>
+	)
+}
+
+export default Navigation

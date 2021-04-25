@@ -1,0 +1,8 @@
+.card-imgDetail{
+	width: 70%;
+}
+@media(min-width:576px){
+	.card-imgDetail{
+		width: 50%;
+	}
+}

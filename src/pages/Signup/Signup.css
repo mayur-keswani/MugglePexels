@@ -1,0 +1,27 @@
+#signup-section{
+	margin:auto;
+	box-sizing: border-box;
+}
+.prod-title {
+ height: 10vh;
+ padding: 2px;
+ display: flex;
+ flex-direction: row;
+ align-items: center;
+ justify-content: flex-start;
+ box-sizing: border-box;
+ /* border: 2px solid red; */
+}
+.proj-illustration{
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+	background-image: url("illustration.jpg");
+	background-position: center;
+	background-repeat: no-repeat;
+	height: 90vh ;
+	overflow-x: scroll !important;
+	white-space: nowrap;
+	box-sizing: border-box;
+	
+}

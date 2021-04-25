@@ -1,0 +1,9 @@
+.underlined-tabs{
+	font-size: 1.2rem;
+	height: 7vh !important;
+	box-shadow:  0px 0px 0px 2px #cfcdcd;
+}
+
+.tab:hover{
+	border-bottom: 3px solid rgb(107, 196, 231);
+}
