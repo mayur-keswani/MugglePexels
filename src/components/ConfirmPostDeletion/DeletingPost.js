@@ -1,7 +1,7 @@
 import React, { Fragment, useContext } from 'react'
-import { Link, useHistory } from 'react-router-dom';
+import {  useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import {Card, CardText, CardBody, CardLink,CardTitle, CardSubtitle, Button} from 'reactstrap';
+import {Card, CardText, CardBody,CardTitle, CardSubtitle, Button} from 'reactstrap';
 import UserContext from '../../context/UserContext';
 import { TOGGLE_MODAL } from '../../context/action-types';
 import firebase from 'firebase/app'
@@ -39,7 +39,7 @@ const DeletingPost = () =>{
 					
           			<CardSubtitle className="h6 mb-2 text-muted">once deleted , won't be recovered</CardSubtitle>
         		</CardBody>
-        		<img width="50%" className="mx-auto img-thumbnail" src={postToDelete.imageURL} alt="Card image cap" />
+        		<img width="50%" className="mx-auto img-thumbnail" src={postToDelete.imageURL} alt={postToDelete.heading} />
         		<CardBody>
          			<CardText>{postToDelete.description}</CardText>
          			<Button outline color="danger"

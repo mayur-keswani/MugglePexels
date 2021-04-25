@@ -1,11 +1,8 @@
 import React, { Fragment, useEffect, useState } from 'react'
+import MugglesPhoto from '../../components/MugglesPhoto/MugglesPhoto'
 import axios from 'axios'
 import {v4} from 'uuid'
 import './MugglesPhotos.css'
-
-import Product from '../../components/MugglesPhoto/MugglesPhoto'
-import MugglesPhoto from '../../components/MugglesPhoto/MugglesPhoto'
-
 
 
 const MugglesPhotos = ({searchedProduct}) => {

@@ -68,7 +68,7 @@ const App = () => {
     dispatch({type:CREATE_USER,payload:user})
   },[])
 
-  let myPostModalBody = null
+
   const ModalBodyHandler = (view_post,delete_post) =>{
     if(view_post){
       return <ImageDetail/>

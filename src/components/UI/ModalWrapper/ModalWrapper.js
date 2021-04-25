@@ -1,7 +1,7 @@
 import React, { Fragment, useContext } from 'react'
 import { Modal,ModalHeader , ModalBody } from 'reactstrap';
 // context-api stuff
-import { SET_IMAGE_TO_COLLECT, TOGGLE_MODAL } from '../../../context/action-types';
+import { TOGGLE_MODAL } from '../../../context/action-types';
 import UserContext from '../../../context/UserContext';
 
 
