@@ -1,19 +1,38 @@
-import React, { Fragment, useContext } from 'react'
+import React, { Fragment, useContext , useEffect} from 'react'
 import Collection from './Collection.js'
 import {Button, Row , Col} from 'reactstrap'	
 import { v4 } from 'uuid'
 import './Collections.css'
 // context-api stuff
 import UserContext from '../../context/UserContext.js'
-import {SET_IMAGE_TO_COLLECT} from '../../context/action-types'
-// firebase
+import {SET_IMAGE_TO_COLLECT , TOGGLE_SPINNER , SET_COLLECTIONS } from '../../context/action-types'
+// firebase, 
 import firebase from 'firebase/app'
 import { toast } from 'react-toastify'
 const Collections = () =>{
 
 	const {user , dispatch} =useContext(UserContext)
-	const {collections,imageToCollect} = user
+	const {auth_detail,collections,imageToCollect} = user
 
+	const syncCollection=async()=>{
+		let collectionRef=await firebase.database().ref().child('/collections')  
+		  dispatch({type:TOGGLE_SPINNER,payload:true})
+		  collectionRef
+			  .orderByChild("userID")
+			  .equalTo(user.auth_detail.uid.toString())
+			  .on("value",(snapshot)=>{
+				  console.log(snapshot.val())
+				  dispatch({type:SET_COLLECTIONS,payload:snapshot.val()})
+			  })
+		  dispatch({type:TOGGLE_SPINNER,payload:false})
+	  }
+
+	useEffect(()=>{
+		if(user.auth_detail){
+		  syncCollection()
+		}
+	  },[])
+	
 	const createCollection= async() => {
 		// fetching items from imgToCollect
 		console.log("[CreateCollection]")
@@ -23,7 +42,7 @@ const Collections = () =>{
 		// Storing item into object
 		let object;
 		if(item){
-		   object={ name:"",items:[{...item}] }
+		   object={userID:auth_detail.uid.toString(), name:"",items:[{...item}] }
 		}else{
 			object={ name:"",items:[] }
 		}

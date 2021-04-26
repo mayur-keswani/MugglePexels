@@ -59,21 +59,11 @@ const App = () => {
   const [ myPosts , dispatchPost] = useReducer(PostReducer,post_initialState)                 
   const [ criterion , setCriterion]=useState("products");
   
-  const syncCollection=async()=>{
-    let collectionsRef=await firebase.database().ref().child('/collections')
-    dispatch({type:TOGGLE_SPINNER,payload:true})
-    collectionsRef.on("value",(snapshot)=>{
-      
-      dispatch({type:SET_COLLECTIONS,payload:snapshot.val()})
-    })
-    dispatch({type:TOGGLE_SPINNER,payload:false})
-  }
   useEffect(()=>{
 
-    JSON.parse(localStorage.getItem('user'))
-    dispatch({type:CREATE_USER,payload:user})
-
-    syncCollection()
+    let loginAuth=JSON.parse(localStorage.getItem('user'))
+    dispatch({type:CREATE_USER,payload:loginAuth})
+    
   },[])
 
 

@@ -35,7 +35,7 @@ do git clone of the repository https://github.com/mayur-keswani/MugglePexels.git
  - Download Image-Offline 📥
 
  - Pick the image and store them into your collection
-	for later use
+	for later use  _which can be accessed by that authorized user only_ 
 
  - Upload/Update your Personal Photos securely on firebase-bucket ☁️
 

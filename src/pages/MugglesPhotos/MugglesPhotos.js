@@ -10,7 +10,7 @@ const MugglesPhotos = ({searchedProduct}) => {
 
 	const fetchProducts=async(CancelToken)=>{
 			
-		const {data}=await axios.get(`https://api.unsplash.com/photos/random?count=5&query=${searchedProduct}`,{
+		const {data}=await axios.get(`https://api.unsplash.com/photos/random?count=20&query=${searchedProduct}`,{
 								cancelToken:CancelToken.token,
 								headers:{
 									Authorization: `Client-ID ${process.env.REACT_APP_UNSPLASH_API_KEY}`
