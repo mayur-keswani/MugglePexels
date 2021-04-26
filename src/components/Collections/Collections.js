@@ -5,7 +5,7 @@ import { v4 } from 'uuid'
 import './Collections.css'
 // context-api stuff
 import UserContext from '../../context/UserContext.js'
-import {SET_IMAGE_TO_COLLECT , TOGGLE_SPINNER , SET_COLLECTIONS } from '../../context/action-types'
+import {SET_IMAGE_TO_COLLECT , TOGGLE_SPINNER , SET_COLLECTIONS, TOGGLE_MODAL } from '../../context/action-types'
 // firebase, 
 import firebase from 'firebase/app'
 import { toast } from 'react-toastify'
@@ -34,7 +34,13 @@ const Collections = () =>{
 	  },[])
 	
 	const createCollection= async() => {
-		// fetching items from imgToCollect
+		if(!auth_detail){
+			toast("Please Login 🙏",{
+				type:"info"
+			})
+			dispatch({type:TOGGLE_MODAL,payload:false})
+		}else{
+			// fetching items from imgToCollect
 		console.log("[CreateCollection]")
 		const item=imageToCollect
 		//generating unique id from new-collection object
@@ -44,7 +50,7 @@ const Collections = () =>{
 		if(item){
 		   object={userID:auth_detail.uid.toString(), name:"",items:[{...item}] }
 		}else{
-			object={ name:"",items:[] }
+			object={userID:auth_detail.uid.toString(), name:"",items:[] }
 		}
 		//
 		let databaseRef=await firebase.database().ref()
@@ -61,11 +67,11 @@ const Collections = () =>{
 					type:"error"
 				})
 			})
-		
 
 		 dispatch({type:SET_IMAGE_TO_COLLECT,payload:null})
+		}
+		
 	  }
-	
 	
 
 	let collectionRowItems;	
