@@ -1,8 +1,6 @@
 import React, { Fragment , useState , useContext} from 'react'
-
 // import component
 import Logo from '../../Logo/Logo'
-
 // For styling
 import {
 	Collapse,
@@ -13,22 +11,24 @@ import {
 	NavItem,
 	NavLink,
 	Button,
-	NavbarText
+	NavbarText,
+	UncontrolledTooltip
   } from 'reactstrap';
-
+// react icons
+import {MdCollectionsBookmark} from 'react-icons/md'
 // react-router-dom
   import { Link } from 'react-router-dom';
 
 // context api stuff
 import UserContext from '../../../../context/UserContext'
 
-import { CREATE_USER } from '../../../../context/action-types';
+import { CREATE_USER, TOGGLE_MODAL } from '../../../../context/action-types';
   
 const Navigation = () =>{
 	const [isOpen, setIsOpen] = useState(false);
 	// const [searchInput,setSearchInput] = useState("")
 	const {user , dispatch} = useContext(UserContext)
-	const {auth_detail} = user
+	const {auth_detail , modalIsOpen} = user
 	const toggle = () => setIsOpen(!isOpen);
 
 	return(
@@ -44,8 +44,25 @@ const Navigation = () =>{
 				style={{backgroundColor:(isOpen && window.innerWidth<576) ?"#242B2E":"transparent"}}>
 			<NavbarText>{auth_detail?`Hello ${auth_detail.email}`:"Hello Muggle !!"}</NavbarText>
 				<Nav className="ml-auto p-3 auto text-white" navbar>
-					{
-						auth_detail?
+						<NavItem>
+							<NavLink tag={Link}
+									to="/" 
+									className="text-white"
+								   	onClick={()=>
+										   dispatch({type:TOGGLE_MODAL,payload:true})
+									}>
+							   		{isOpen?
+									   "Your Collections":
+									   <Button color="info" size="lg" id="user-collection">
+									   	<MdCollectionsBookmark/>
+									   </Button>}
+									   <UncontrolledTooltip placement="bottom" target="user-collection">
+       										Your Collection
+     									</UncontrolledTooltip>
+							</NavLink>
+						</NavItem>
+						{
+						 auth_detail?
 							(<NavItem >
              		  			<NavLink tag={Link} to="/" className="text-white"
 								   onClick={()=>{
@@ -53,7 +70,8 @@ const Navigation = () =>{
 										   dispatch({type:CREATE_USER, payload:null})
 
 									   }}>
-							   		{isOpen?"Logout":
+							   		{isOpen?
+									   "Logout":
 									   <Button color="info" size="lg">
 									   	Logout
 									   </Button>}

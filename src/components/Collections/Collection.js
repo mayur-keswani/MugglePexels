@@ -1,55 +1,84 @@
-import React, { Fragment, useContext } from 'react'
-import CollectionItem from './CollectionItem.js'
-import {Button, Row , Col} from 'reactstrap'	
-import './Collection.css'
-// context-api stuff
-import UserContext from '../../context/UserContext.js'
-import {CREATE_COLLECTION} from '../../context/action-types'
+import React , {Fragment, useContext} from 'react'
+import { Button , Row  } from 'reactstrap'
+import { toast } from 'react-toastify'
+import UserContext from '../../context/UserContext'
+import {SET_IMAGE_TO_COLLECT} from '../../context/action-types'
+// firebase
+import firebase from 'firebase/app'
 
 
-const Collection = () =>{
+const Collection = ({uid,collection_items}) =>{
+	const {user,dispatch} = useContext(UserContext)
+	const {imageToCollect}= user
 
-	const {user , dispatch} =useContext(UserContext)
-	const {collections} = user
-	let collectionRowItems;	
-	console.log("[collection]")
-	if(Object.keys(collections).length>0){
-			collectionRowItems=Object.entries(collections).map(([key,value])=>
-				 <CollectionItem 
-				 	key={key}
-					uid={key}
-					collection_items={ value }/>
-			)	
-	}else{
-			collectionRowItems=(<p>You have no collection saved!</p>)
+	const addInCollection=async(id)=>{
+		console.log("[AddInCollection]")
+	  // getting item from imageToCollect
+		  let item=imageToCollect
+		  collection_items.items.push(item)
+	 	  let databaseRef = await firebase.database().ref()
+		 databaseRef
+		 	.child('/collections/'+id)
+			.update({
+				items:collection_items.items
+			})
+			.then(()=>{
+				toast("Collection updated succcessfully",{
+					type:"success"
+				})
+			})
+			.catch(error=>{
+				toast(error,{
+					type:"error"
+				})
+			})
+	
+	   dispatch({type:SET_IMAGE_TO_COLLECT,payload:null})
 	}
 
+	let content=null
+	
+	console.log("[collectionItem]")
+	if(typeof collection_items.items.length !== typeof undefined){
+		content=(collection_items.items.map(prod=>{
+				  if(prod)
+					return (
+							<img key={prod.id}
+								 src={prod.imageURL}
+								 className="img-thumbnail img-fluid p-2"
+								 alt={prod.id} 
+								 width="220px" 
+								 height="300px"/>
+					)
+				  else	
+					return null
+			 	})
+		)
+	}else{
+		content=(<h2>No items in this collection</h2>)
+	}
 	return(
 		<Fragment>
-			<div id="collection-section" className="p-0 m-0">
-			 <Row>
-				<Col sm={4} >
-					<div className="collection-header p-1">
-						<h4>Save to Collection</h4>
-					</div>
-				</Col>
-				<Col sm={4} className="text-right offset-sm-4" >
-					<Button color="success" onClick={()=>dispatch({type:CREATE_COLLECTION})}>Create New-Collection
-					</Button>
-				</Col>
-			 </Row>
-			 <Row>
-				<Col>
-				 <div className="collection-body p-5">			  	
-					 {collectionRowItems}	
-				 </div>
-				</Col>
-			 </Row>	
-				
-			</div>
-			
+		<Row>	 
+		  <div>
+		 	<label>{collection_items.name}</label> 
+			 <Button color="info" 
+			 		 onClick={()=>
+						addInCollection(uid)
+			 		 } 
+					 className="btn-add p-2" >
+				Add Here
+			</Button>
+			 <span className="triangle-topright"></span>
+		  </div>
+		  <div className="collection-row" >	
+			{ 
+				content
+			}
+		  </div>
+		</Row>
 		</Fragment>
 	)
 }
 
-export default React.memo(Collection)
+export default Collection

@@ -4,7 +4,9 @@ import NavTabs from './NavTabs/NavTabs'
 
 import './Header.css'
 import {BsSearch} from 'react-icons/bs'
-import { Form , Col ,FormGroup  ,InputGroup, Input ,InputGroupAddon, Button, Row } from 'reactstrap'
+import { Form , Col ,FormGroup  ,InputGroup,
+		 Input ,InputGroupAddon, Button, Row ,
+	   } from 'reactstrap'
 //context-api stuff
 
 
@@ -50,7 +52,7 @@ const Header = ({setCriterion}) =>{
 									</Button>
 								</InputGroupAddon>
 							</InputGroup>
-							<span className="text-muted">Suggested:car  washing machine  appliances  refrigerator  male  kitchen appliances  more</span>
+							<span className="text-warning text-lead">Suggested:car  washing machine  appliances  refrigerator  male  kitchen appliances  more</span>
 						</FormGroup>
 					</Form>
 				</Col>

@@ -1,15 +1,12 @@
 import React, { Fragment, useEffect, useReducer, useState } from 'react' 
 // css/styling components
 import 'bootstrap/dist/css/bootstrap.min.css'
-import 'bootstrap/dist/js/bootstrap.min'
-
-import 'bootstrap/dist/css/bootstrap.css'
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 // react functional component
 import MugglesPhotos from './pages/MugglesPhotos/MugglesPhotos';
 import Header from './components/UI/Header/Header';
-import Collection from './components/Collections/Collection';
+import Collections from './components/Collections/Collections';
 import Signup from './pages/Signup/Signup';
 import Login from './pages/Login/Login';
 import ModalWrapper from './components/UI/ModalWrapper/ModalWrapper';
@@ -17,22 +14,22 @@ import ImageDetail from './components/Image_Details/ImageDetail';
 import NavTabs from './components/UI/Header/NavTabs/NavTabs';
 import MyPosts from './pages/MyPosts/MyPosts'
 import UploadPost from './pages/UploadPost/UploadPost';
-
+import DeletingPost from './components/ConfirmPostDeletion/DeletingPost';
+// react-router
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-
-
+// context-api stuff
 import UserContext from './context/UserContext'
 import UserReducer from './context/user-reducer'
 import PostReducer from './context/photos-reducers';
-
-
+import { CREATE_USER , SET_COLLECTIONS , TOGGLE_SPINNER} from './context/action-types';
+// firebase
 import firebase from 'firebase/app'
 import 'firebase/auth'
 import 'firebase/storage'
 import 'firebase/database'
 import {firebaseConfig} from './config/configs';
-import { CREATE_USER } from './context/action-types';
-import DeletingPost from './components/ConfirmPostDeletion/DeletingPost';
+
+
 
 firebase.initializeApp(firebaseConfig)
 
@@ -41,9 +38,9 @@ const user_initialState={     /* For Authentication and storing ref of collectio
     collections:{},
     imageToCollect:null,
     imageToView:null,
-    modalIsOpen:false         
+    modalIsOpen:false ,
+    isLoading:false        
 }
-
 
 const post_initialState={   /* For User Personal Uploads */
   posts:{},
@@ -62,10 +59,21 @@ const App = () => {
   const [ myPosts , dispatchPost] = useReducer(PostReducer,post_initialState)                 
   const [ criterion , setCriterion]=useState("products");
   
+  const syncCollection=async()=>{
+    let collectionsRef=await firebase.database().ref().child('/collections')
+    dispatch({type:TOGGLE_SPINNER,payload:true})
+    collectionsRef.on("value",(snapshot)=>{
+      
+      dispatch({type:SET_COLLECTIONS,payload:snapshot.val()})
+    })
+    dispatch({type:TOGGLE_SPINNER,payload:false})
+  }
   useEffect(()=>{
 
     JSON.parse(localStorage.getItem('user'))
     dispatch({type:CREATE_USER,payload:user})
+
+    syncCollection()
   },[])
 
 
@@ -115,7 +123,7 @@ const App = () => {
                         {
                           user.imageToView?
                            <ImageDetail/>:
-                           <Collection />
+                           <Collections />
                         }    
                       </ModalWrapper>
                     </>
@@ -126,16 +134,13 @@ const App = () => {
                       <NavTabs/>
                       <MyPosts/>
                      
-                      {
-                       
+                      { 
                         <ModalWrapper>
                           {
                             ModalBodyHandler(myPosts.postToView,myPosts.postToDelete)
                           }        
                         </ModalWrapper>
                       }
-                        
-                      
                     </>
                   }>
                   </Route>
