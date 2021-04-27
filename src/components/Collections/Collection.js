@@ -1,5 +1,5 @@
 import React , {Fragment, useContext} from 'react'
-import { Button , Row  } from 'reactstrap'
+import { Button , Col, Row  } from 'reactstrap'
 import { toast } from 'react-toastify'
 import UserContext from '../../context/UserContext'
 import {SET_IMAGE_TO_COLLECT} from '../../context/action-types'
@@ -58,9 +58,13 @@ const Collection = ({uid,collection_items}) =>{
 	}
 	return(
 		<Fragment>
-		<Row>	 
-		  <div>
-		 	<label>{collection_items.name}</label> 
+		
+		<Row className="container-fluid m-0 p-0">	 
+		  <Col lg={12} className="text-left p-0">
+		  	<div className="h4 text-muted">{collection_items.name}</div> 
+		  </Col>
+		  <Col lg={12} className="text-left">
+		  <div>	
 			 <Button color="info" 
 			 		 onClick={()=>
 						addInCollection(uid)
@@ -70,11 +74,12 @@ const Collection = ({uid,collection_items}) =>{
 			</Button>
 			 <span className="triangle-topright"></span>
 		  </div>
-		  <div className="collection-row" >	
-			{ 
-				content
-			}
+		  	<div className="collection-row" >	
+				{ 
+					content
+				}
 		  </div>
+		  </Col>	  
 		</Row>
 		</Fragment>
 	)

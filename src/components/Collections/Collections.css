@@ -21,16 +21,18 @@
 }
 .btn-add{
 	position: absolute;
+	left: -1rem;
+	top:0.4rem;
 	z-index: 250;
 	margin: 0;
 }
 
 .triangle-topright{
-		width: 0;
-		height: 0;
-		border-top: 40px solid rgb(12, 161, 247);
-		border-left: 23px solid transparent;
-		position: absolute;
-		top: 5.6rem;
-		left:3.1rem;
+		width: 15;
+		height: 20;
+		border-top: 41px solid rgb(12, 161, 247);
+		border-left: 40px solid transparent;
+		position: relative;
+		top: 5.5rem;
+		left:-1.1rem;
 }
