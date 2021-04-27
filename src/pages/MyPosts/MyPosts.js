@@ -4,28 +4,39 @@ import {FaUpload} from 'react-icons/fa'
 //context-api stuff
 import MyPost from '../../components/MyPost/MyPost'
 import UserContext from '../../context/UserContext'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { SET_PHOTOS } from '../../context/action-types'
 
 import firebase from 'firebase/app'
+import { toast } from 'react-toastify'
 
 const MyPosts = () =>{
-	const {myPosts , dispatchPost} = useContext(UserContext)
+	const {user,myPosts , dispatchPost} = useContext(UserContext)
 	const {posts} = myPosts
-	
+	const {auth_detail} = user
+	const history = useHistory()
+
 	const syncPosts = async() =>{
-		let databaseRef=await firebase.database().ref('/posts')
-		databaseRef.on('value',(snapshot)=>{
+		if(!auth_detail){		// Redirecting USER to Home-Page , if not login
+			toast("Please Login 🙏",{
+				type:"info"
+			})
+			history.replace('/')
+		}else{					// fetching all user' post based on his/her uid 
+			let databaseRef=await firebase.database().ref('/posts')
+			databaseRef.orderByChild('/userID').equalTo(auth_detail.uid).on('value',(snapshot)=>{
 			dispatchPost({
-			type:SET_PHOTOS,
-			payload:snapshot.val()
-		  })
-		})
-	  }
+				type:SET_PHOTOS,
+				payload:snapshot.val()
+		  	})
+			})
+		}
+	}
 	  useEffect(()=>{
 		syncPosts();
 	  },[])
 
+		
 	return(
 		<Fragment>
 		  <div className="container">

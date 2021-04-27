@@ -6,11 +6,20 @@
   font-family: 'Poppins', sans-serif;
 }
 html,body{
-  /* display: grid; */
-  /* height: 100%; */
   text-align: center;
 }
+.details-zone{
+  background-image: url("https://images.pexels.com/photos/1166644/pexels-photo-1166644.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
 
+h1{
+  background:linear-gradient( #0ef7a9 , #267e5b , #093028);
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
 .image-preview{
   height: 300px;
   width: 100%;
@@ -56,7 +65,7 @@ html,body{
   font-size: 20px;
   right: 15px;
   top: 15px;
-  color: #9658fe;
+  color: #237A57;
   cursor: pointer;
   display: none;
 }
@@ -69,7 +78,7 @@ html,body{
   font-size: 18px;
   color: #fff;
   display: none;
-  background: linear-gradient(135deg,#3a8ffe 0%,#9658fe 100%);
+  background: linear-gradient(135deg,#3a8ffe 0%,#237A57 100%);
 }
 .wrapper.active:hover .file-name{
   display: block;
@@ -78,20 +87,20 @@ html,body{
   margin-top: 1.3rem;
   margin-bottom: 1.3rem;
  
-  height: 50px;
+  height: 45px;
   border: none;
   outline: none;
-  border-radius: 22px;
+  border-radius: 12px;
   color: #fff;
   font-size: 1.2rem;
-  font-weight: 500;
+  font-weight: 480;
   letter-spacing: 1px;
   text-transform: uppercase;
   text-align: center;
   cursor: pointer;
-  padding-left: 1.2rem;
-  padding-right: 1.2rem;
-  background: linear-gradient(135deg,#3a8ffe 0%,#9658fe 100%);
+  padding-left: 0.7rem;
+  padding-right: 0.7rem;
+  background: linear-gradient(135deg,#0b2c35 0%,#2ea5a5 100%);
 }
 @media(min-width:500px){
   .wrapper .image{

@@ -18,6 +18,7 @@ const Collections = () =>{
 	const [collectionName,setCollectionName] = useState("")
 
 	const syncCollection=async()=>{
+		/* fetching logged user's collection */
 		let collectionRef=await firebase.database().ref().child('/collections')  
 		  dispatch({type:TOGGLE_SPINNER,payload:true})
 		  collectionRef
@@ -37,6 +38,7 @@ const Collections = () =>{
 	  },[])
 	
 	const createCollection= async(name) => {
+		/* Redirecting USER to Home page if not logged in */
 		if(!auth_detail){
 			toast("Please Login 🙏",{
 				type:"info"
@@ -71,8 +73,9 @@ const Collections = () =>{
 		 setNewCollection(false)
 		}
 	  }
+
+	/* Iterationg over all collection fetched from database [rendering collection component for every criteria/row]*/
 	let collectionRowItems;	
-	console.log("[collection]")
 	if(collections){
 			collectionRowItems=Object.entries(collections).map(([key,value])=>
 				 <Collection 
@@ -87,11 +90,15 @@ const Collections = () =>{
 
 	return(
 		<Fragment>
-			{
-				isNewCollection
+			{	
+				/* Redering JSX whether 
+					FORM=> If user selected to create-new-collection & 
+					Collection List => if user doesnot create new collection
+				 */
+				isNewCollection				
 					?
 					( 
-					<div className="collection-form" className="p-0 m-0">
+					<div className="collection-form p-0 m-0">
 						<div className="h3 text-primary">Enter New-Collection Details</div>
 						<FormGroup>
        			 			<Label >Name </Label>
@@ -124,7 +131,6 @@ const Collections = () =>{
 				 			</div>
 							</Col>
 			 			</Row>	
-				
 					 </div>
 					)
 			}

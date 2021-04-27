@@ -10,7 +10,7 @@ const MugglesPhotos = ({searchedProduct}) => {
 
 	const fetchProducts=async(CancelToken)=>{
 			
-		const {data}=await axios.get(`https://api.unsplash.com/photos/random?count=2&query=${searchedProduct}`,{
+		const {data}=await axios.get(`https://api.unsplash.com/photos/random?count=1&query=${searchedProduct}`,{
 								cancelToken:CancelToken.token,
 								headers:{
 									Authorization: `Client-ID ${process.env.REACT_APP_UNSPLASH_API_KEY}`
@@ -18,7 +18,7 @@ const MugglesPhotos = ({searchedProduct}) => {
 							})
 
 		const results=data;
-		
+		/* manipulating or taking only required properties from fetched-Response*/ 
 		const updatedPhotos=results.map(photo=> {
 			return{
 					id:v4(),
@@ -34,16 +34,15 @@ const MugglesPhotos = ({searchedProduct}) => {
 		let CancelToken=axios.CancelToken.source();
 		fetchProducts(CancelToken);
 		return () => {
-			CancelToken.cancel(`Previous Request Cancelled${searchedProduct}]`) // <-- 3rd step
+			CancelToken.cancel(`Previous Request Cancelled${searchedProduct}]`) 
 		  }
 	},[searchedProduct])
 
-	
 	let content = products.map(product=>
-				<MugglesPhoto 
+					<MugglesPhoto 
 					key={product.id} 
 					productDetail={product} />
-			)
+				)
 	return(
 		<Fragment>
 		 <div className="container">
@@ -52,6 +51,5 @@ const MugglesPhotos = ({searchedProduct}) => {
 		</Fragment>
 	)
 }
-
 
 export default MugglesPhotos

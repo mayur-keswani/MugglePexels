@@ -18,17 +18,14 @@ import {
 import {MdCollectionsBookmark} from 'react-icons/md'
 // react-router-dom
   import { Link } from 'react-router-dom';
-
 // context api stuff
 import UserContext from '../../../../context/UserContext'
-
 import { CREATE_USER, TOGGLE_MODAL } from '../../../../context/action-types';
   
 const Navigation = () =>{
 	const [isOpen, setIsOpen] = useState(false);
-	// const [searchInput,setSearchInput] = useState("")
 	const {user , dispatch} = useContext(UserContext)
-	const {auth_detail , modalIsOpen} = user
+	const {auth_detail } = user
 	const toggle = () => setIsOpen(!isOpen);
 
 	return(

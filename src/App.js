@@ -21,15 +21,13 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import UserContext from './context/UserContext'
 import UserReducer from './context/user-reducer'
 import PostReducer from './context/photos-reducers';
-import { CREATE_USER , SET_COLLECTIONS , TOGGLE_SPINNER} from './context/action-types';
+import { CREATE_USER } from './context/action-types';
 // firebase
 import firebase from 'firebase/app'
 import 'firebase/auth'
 import 'firebase/storage'
 import 'firebase/database'
 import {firebaseConfig} from './config/configs';
-
-
 
 firebase.initializeApp(firebaseConfig)
 
@@ -60,14 +58,13 @@ const App = () => {
   const [ criterion , setCriterion]=useState("products");
   
   useEffect(()=>{
-
-    let loginAuth=JSON.parse(localStorage.getItem('user'))
+    let loginAuth=JSON.parse(localStorage.getItem('user'))  
     dispatch({type:CREATE_USER,payload:loginAuth})
     
   },[])
 
-
-  const ModalBodyHandler = (view_post,delete_post) =>{
+ /*rendering component based on what user wanna perform task on post*/
+  const ModalBodyHandler = (view_post,delete_post)=>{   
     if(view_post){
       return <ImageDetail/>
     }
@@ -106,9 +103,7 @@ const App = () => {
                     <>
                      
                       <Header setCriterion={(value)=>setCriterion(value)} />
-
                       <MugglesPhotos searchedProduct={criterion}/>
-
                       <ModalWrapper>
                         {
                           user.imageToView?
@@ -123,7 +118,6 @@ const App = () => {
                     <>
                       <NavTabs/>
                       <MyPosts/>
-                     
                       { 
                         <ModalWrapper>
                           {
@@ -141,14 +135,10 @@ const App = () => {
                     </>
                   }>
                   </Route>
-              </Switch>
-                
-             
+              </Switch>       
                 
           </UserContext.Provider>
       </BrowserRouter>
-
-       
 
    </Fragment>
   );

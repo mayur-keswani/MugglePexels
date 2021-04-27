@@ -1,6 +1,6 @@
 import React, { Fragment, useContext, useEffect , useRef, useState} from 'react'
 import './UploadPost.css'
-import {Row, Col, Spinner} from 'reactstrap'
+import {Row, Col, Spinner , Button} from 'reactstrap'
 import {AiOutlineCloudUpload} from 'react-icons/ai'
 import { toast } from 'react-toastify'
 import { v4 } from 'uuid'
@@ -19,15 +19,23 @@ const UploadPost = () =>{
 
 	const history = useHistory()
 	
-	const { myPosts , dispatchPost } = useContext(UserContext)
+	const { user ,myPosts , dispatchPost } = useContext(UserContext)
 	const { updatePost , updatePostKey , isLoading } = myPosts
+	const {auth_detail} = user
 
 	const [imageURL,setImageURL] = useState("https://i.stack.imgur.com/tDPMH.png");
 	const [heading,setHeading] = useState("")
 	const [criterion,setCriterion]=useState("")
 	const [description,setDescription] = useState("");
 	const [isPostUpdating,setUpdatePost] =useState(false)
+
 	useEffect(()=>{
+		if(!auth_detail){
+			toast("Please Login 🙏",{
+				type:"info"
+			})
+			history.replace('/')
+		}
 		if(updatePost){
 			setImageURL(updatePost.imageURL)
 			setHeading(updatePost.heading)
@@ -91,6 +99,7 @@ const UploadPost = () =>{
 
 	const createPost=async()=>{
 		let post = {
+			userID:auth_detail.uid,
 			id: v4(),
 			imageURL:imageURL,
 			heading:heading,
@@ -116,6 +125,7 @@ const UploadPost = () =>{
 
 	const updatePostHandler=()=>{
 		let post = {
+			userID:auth_detail.uid,
 			id:updatePostKey,
 			imageURL:imageURL,
 			heading:heading,
@@ -155,21 +165,28 @@ const UploadPost = () =>{
 	return(
 			<Fragment>
 				
-					<div className="details-zone">
+					<div className="details-zone" >
 						<Row className="text-center">
-						 
-						 <Col  lg={{ size: 4, offset: 4 }} md={{ size: 6, offset: 3 }} sm="12">	
-	
-							  <div className="form-group">
+						 <Col lg={{ size: 4, offset: 2 }} md={{ size: 6, offset: 3 }} sm="12" 
+							className="d-flex align-items-center justify-content-center">
+							 <div className="h2">
+								 <h1 >Enter Post Details
+								 </h1>
+							 </div>
+						 </Col>
+						 <Col  lg={{ size: 4, offset: 0 }} md={{ size: 6, offset: 3 }} sm="12">	
+							  <div className="form-group mt-2">
 								  <label >Criterion</label>
-								  <select className="form-control" name="criterion" 
-								 >
-									  <option>Personal</option>
-									<option>Family</option>
-									<option>Friends</option>
-									<option>Academics</option>
-									<option>Office</option>
-									<option>Festival</option>
+								  <select className="form-control" 
+								  		name="criterion" 
+								  		value={criterion} 
+										onChange={(e)=>setCriterion(e.target.value)} >
+									<option value="Personal">Personal</option>
+									<option value="Family">Family</option>
+									<option value="friends">Friends</option>
+									<option value="Academics">Academics</option>
+									<option value="Office">Office</option>
+									<option value="Festival">Festival</option>
 								 </select>
 							  </div>
 	
@@ -177,8 +194,8 @@ const UploadPost = () =>{
 								  <label >Post Title</label>
 								 <input type="text" className="form-control"  
 									 id="exampleForm" 			  		
-									placeholder="Post Heading ..."
-									value={heading}
+									 placeholder="Post Heading ..."
+									 value={heading}
 									onChange={(e)=>setHeading(e.target.value)}
 								 />
 							  </div>
@@ -186,7 +203,9 @@ const UploadPost = () =>{
 				
 							  <div className="form-group">
 								  <label >Description</label>
-								  <textarea className="form-control" name="description" rows="3"
+								  <textarea className="form-control" 
+								  name="description" rows="3"
+								  style={{resize:"none"}}
 								  value={description} 
 								  onChange={(e)=>setDescription(e.target.value)}>
 				
@@ -221,13 +240,16 @@ const UploadPost = () =>{
 								onChange={(event)=>imageUploadHandler(event)}/>
 	
 							<div>	
-								<button type="submit" 
-										className="btn btn-success btn-lg"
+								<Button type="submit" 
+										outline
+										color="success"
+										size="lg"
+										className="px-5"
 										onClick={submitFormHandler}>
 							
 									{isPostUpdating?"Update Post"
 												:" Upload Post "} <AiOutlineCloudUpload/>
-								</button>
+								</Button>
 							</div>
 						</Col>
 						
