@@ -38,8 +38,7 @@ const Collection = ({uid,collection_items}) =>{
 
 	let content=null
 	
-	console.log("[collectionItem]")
-	if(typeof collection_items.items.length !== typeof undefined){
+	if(collection_items.items){
 		content=(collection_items.items.map(prod=>{
 				  if(prod)
 					return (
